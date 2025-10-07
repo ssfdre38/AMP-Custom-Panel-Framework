@@ -1,8 +1,8 @@
 import './style.css'
 import { AmpClient } from './sdk.js'
+import { getApiBase } from './config.js'
 
-const apiBase = localStorage.getItem('amp_api_base') || 'http://localhost:8080/API'
-const client = new AmpClient(apiBase)
+const client = new AmpClient(getApiBase())
 
 const app = document.getElementById('app')
 
@@ -14,9 +14,6 @@ async function loginFormSubmit(e) {
   e.preventDefault()
   const username = document.getElementById('username').value
   const password = document.getElementById('password').value
-  const base = document.getElementById('apiBase').value
-  localStorage.setItem('amp_api_base', base)
-  client.baseUrl = base
   const res = await client.login({ username, password })
   if (!res.success) {
     setStatus('Login failed')
@@ -74,7 +71,6 @@ function renderLogin() {
   <div class="login">
     <h1>AMP Custom Panel</h1>
     <form id="loginForm">
-      <label>API Base <input id="apiBase" value="${apiBase}"/></label>
       <label>Username <input id="username"/></label>
       <label>Password <input id="password" type="password"/></label>
       <button type="submit">Login</button>
